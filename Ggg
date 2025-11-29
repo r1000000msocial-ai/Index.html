@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A1 Property Care - Commercial & Residential Property Services</title>
+    <title>A1 Property Care LLC - Commercial & Residential Property Services</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     
@@ -152,10 +152,9 @@
         <div class="max-w-7xl mx-auto px-4 lg:px-8">
             <div class="flex justify-between items-center h-20">
                 <div class="flex-shrink-0 flex items-center">
-                    <!-- LOGO REFINEMENT FOR SYMMETRY AND BALANCE -->
-                    <a href="#" class="text-primary font-black flex flex-col leading-none">
-                        <span class="text-2xl tracking-tight">A1 PROPERTY</span>
-                        <span class="text-primary text-xl font-extrabold tracking-widest -mt-1">CARE</span>
+                    <a href="#" class="text-2xl font-black text-primary tracking-tighter flex flex-col leading-none">
+                        <span>A1 PROPERTY</span>
+                        <span class="text-primary text-base font-black tracking-widest">CARE LLC</span>
                     </a>
                 </div>
 
@@ -246,7 +245,7 @@
                     <h3 class="text-secondary font-bold uppercase tracking-widest text-sm mb-2">Welcome to A1 Property Care</h3>
                     <h2 class="text-3xl font-extrabold text-primary mb-6">Raising the Standard of Clean</h2>
                     <p class="text-gray-600 text-lg leading-relaxed mb-6">
-                        We don't just clean; we care for your investment. Whether managing a sprawling commercial complex in Visalia or providing deep cleaning for a residence in Madera, A1 Property Care applies rigorous commercial protocols to ensure consistency, safety, and excellence.
+                        We don't just clean; we care for your investment. Whether managing a sprawling commercial complex in Visalia or providing deep cleaning for a residence in Madera, A1 Property Care LLC applies rigorous commercial protocols to ensure consistency, safety, and excellence.
                     </p>
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8">
                         <div class="text-center p-4 bg-gray-50 rounded border border-gray-100">
@@ -478,7 +477,7 @@
                                 </div>
                                 
                                 <!-- Placeholder to complete the 3-column grid look if only 7 services -->
-                                <div class="hidden lg:block"></div> 
+                                <!-- We now have 7 in this section. Adding one for balance -->
 
                             </div>
                         </div>
