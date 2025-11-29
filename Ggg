@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A1 Property Care - Commercial & Residential Property Services</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#4338ca', /* Indigo 700 */
+                        secondary: '#fbbf24', /* Amber 400 */
+                        dark: '#1e1b4b', /* Indigo 950 */
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+
+    <style>
+        body { font-family: 'Inter', 'sans-serif'; }
+        
+        /* Sticky Quote Form Logic */
+        .sticky-form-container {
+            position: relative;
+        }
+        @media (min-width: 1024px) {
+            .sticky-form-container {
+                position: sticky;
+                top: 120px; /* Offset from top to clear header */
+                height: fit-content;
+                z-index: 30;
+            }
+        }
+
+        /* Hero Background - OVERLAY REMOVED for maximum image visibility */
+        .hero-bg {
+            background-image: url('https://images.pexels.com/photos/7605490/pexels-photo-7605490.jpeg');
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* Footer Background with User Image */
+        .footer-bg {
+            background-image: url('https://images.pexels.com/photos/1209982/pexels-photo-1209982.jpeg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        /* Residential Service Card Background */
+        .residential-card-bg {
+            background-image: url('https://images.pexels.com/photos/34873752/pexels-photo-34873752.jpeg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        
+        /* Commercial Service Card Background */
+        .commercial-card-bg {
+            background-image: url('https://images.pexels.com/photos/16140814/pexels-photo-16140814.jpeg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        /* Checkbox Styling */
+        .form-checkbox {
+            appearance: none;
+            background-color: #fff;
+            margin: 0;
+            font: inherit;
+            color: currentColor;
+            width: 1.15em;
+            height: 1.15em;
+            border: 2px solid #fbbf24;
+            border-radius: 0.15em;
+            display: grid;
+            place-content: center;
+            margin-top: 2px;
+        }
+        .form-checkbox::before {
+            content: "";
+            width: 0.65em;
+            height: 0.65em;
+            transform: scale(0);
+            transition: 120ms transform ease-in-out;
+            box-shadow: inset 1em 1em white;
+            background-color: #4338ca;
+            transform-origin: center;
+            clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+        }
+        .form-checkbox:checked::before {
+            transform: scale(1);
+            background-color: #fbbf24; 
+        }
+
+        /* --- New Accordion Styles for Service Details --- */
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-in-out, padding 0.4s ease-in-out;
+        }
+        .accordion-content.active {
+            max-height: 800px; /* Large enough for expanded content */
+            padding-top: 1rem;
+        }
+
+        /* Loading Spinner */
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #4338ca;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+
+    <script type="module">
+        import { createIcons, Phone, Mail, MapPin, Facebook, Linkedin, Instagram, Menu, X, CheckCircle, Briefcase, Home, Wrench, Package, Sun, Droplet, Zap, Loader } from 'https://cdn.jsdelivr.net/npm/lucide@latest/dist/esm/lucide.js';
+        createIcons({ icons: { Phone, Mail, MapPin, Facebook, Linkedin, Instagram, Menu, X, CheckCircle, Briefcase, Home, Wrench, Package, Sun, Droplet, Zap, Loader } });
+    </script>
+</head>
+<body class="bg-gray-50 text-gray-800 flex flex-col min-h-screen">
+
+    <!-- Top Bar - Find Location (Centered) -->
+    <div class="bg-dark text-white text-xs py-2">
+        <div class="max-w-7xl mx-auto px-4 lg:px-8 flex justify-center items-center">
+            <button onclick="alert('This feature will be built out soon!')" class="bg-secondary text-dark font-bold px-4 py-1.5 rounded hover:bg-yellow-300 transition-colors uppercase tracking-wide text-[11px]">
+                Find an A1 Property Care Location
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Header / Navigation (Kept White for professionalism) -->
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex-shrink-0 flex items-center">
+                    <!-- LOGO REFINEMENT FOR SYMMETRY AND BALANCE -->
+                    <a href="#" class="text-primary font-black flex flex-col leading-none">
+                        <span class="text-2xl tracking-tight">A1 PROPERTY</span>
+                        <span class="text-primary text-xl font-extrabold tracking-widest -mt-1">CARE</span>
+                    </a>
+                </div>
+
+                <div class="hidden lg:flex items-center space-x-8">
+                    <nav class="flex space-x-6 text-sm font-bold text-gray-600 uppercase tracking-wide">
+                        <a href="#full-services" class="hover:text-primary transition">Services</a>
+                        <a href="#why-us" class="hover:text-primary transition">Why Us</a>
+                        <a href="#locations" class="hover:text-primary transition">Locations</a>
+                    </nav>
+
+                    <div class="flex flex-col items-end text-right border-l pl-6 border-gray-200">
+                        <a href="tel:5595552273" class="text-primary font-bold text-lg leading-none hover:underline">(559) 555-CARE</a>
+                        <span class="text-xs text-gray-500 mt-1">Free Estimates • 24/7 Response</span>
+                    </div>
+
+                    <a href="#quote-form-section" class="bg-secondary text-dark font-bold px-6 py-2.5 rounded shadow-sm hover:bg-yellow-300 transition-colors text-sm uppercase">
+                        Get a Quote
+                    </a>
+                </div>
+
+                <button id="mobile-menu-btn" class="lg:hidden text-gray-600 hover:text-primary">
+                    <i data-lucide="menu" class="w-8 h-8"></i>
+                </button>
+            </div>
+        </div>
+
+        <div id="mobile-menu" class="hidden lg:hidden bg-white border-t border-gray-100 absolute w-full shadow-xl">
+            <div class="px-4 pt-2 pb-6 space-y-2">
+                <a href="#full-services" class="block px-3 py-3 text-base font-bold text-gray-700 hover:bg-gray-50 rounded">Services</a>
+                <a href="#why-us" class="block px-3 py-3 text-base font-bold text-gray-700 hover:bg-gray-50 rounded">Why Us</a>
+                <a href="#locations" class="block px-3 py-3 text-base font-bold text-gray-700 hover:bg-gray-50 rounded">Locations</a>
+                <div class="pt-4 mt-4 border-t border-gray-100">
+                    <a href="tel:5595552273" class="block text-primary font-bold text-xl mb-4 text-center">(559) 555-CARE</a>
+                    <a href="#quote-form-section" class="block w-full bg-secondary text-dark font-bold text-center py-3 rounded">GET A QUOTE</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section (Full Brightness) -->
+    <div class="relative hero-bg h-[500px] lg:h-[600px] flex items-center">
+        <div class="max-w-7xl mx-auto px-4 lg:px-8 w-full flex flex-col lg:flex-row">
+            
+            <div class="lg:w-2/3 pt-10 lg:pt-0 text-center lg:text-left">
+                <h1 class="text-4xl lg:text-5xl font-extrabold text-white leading-tight mb-6 shadow-black drop-shadow-lg">
+                    Commercial Quality Care for<br>
+                    <span class="text-secondary">Every Property.</span>
+                </h1>
+                <p class="text-lg lg:text-xl text-gray-100 mb-8 max-w-2xl mx-auto lg:mx-0 font-light leading-relaxed">
+                    From commercial sites to residential properties, we deliver the Central Valley's highest standard of property care.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                    <a href="#quote-form-section" class="bg-secondary text-dark font-black px-8 py-3.5 rounded text-base uppercase tracking-wider hover:bg-yellow-300 transition transform hover:-translate-y-1 shadow-lg">
+                        Start Your Free Estimate
+                    </a>
+                    <a href="#full-services" class="bg-transparent border-2 border-white text-white font-bold px-8 py-3.5 rounded text-base uppercase tracking-wider hover:bg-white hover:text-primary transition">
+                        View Full Services
+                    </a>
+                </div>
+            </div>
+            
+            <div class="lg:w-1/3"></div>
+        </div>
+    </div>
+
+    <!-- Call to Action Banner (Original Primary Color) -->
+    <div class="bg-primary border-b-4 border-dark">
+        <div class="max-w-7xl mx-auto px-4 lg:px-8 py-6 flex flex-col md:flex-row items-center justify-between">
+            <!-- Text Centered and Stacked -->
+            <h2 class="text-2xl font-bold text-white text-center mb-4 md:mb-0">
+                Ready for Quality Service?<br>
+                <span class="text-secondary">Let's Talk Today.</span>
+            </h2>
+            <!-- Button Color Changed to Dark Gray -->
+            <a href="tel:5595552273" class="flex items-center text-white bg-gray-800 px-6 py-2 rounded-full font-bold hover:bg-gray-900 transition">
+                <i data-lucide="phone" class="w-5 h-5 mr-2 text-secondary"></i>
+                Call Now: (559) 555-CARE
+            </a>
+        </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4 lg:px-8 py-12 lg:py-20">
+        <div class="flex flex-col lg:flex-row gap-12">
+            
+            <div class="lg:w-2/3 space-y-16">
+                
+                <section>
+                    <h3 class="text-secondary font-bold uppercase tracking-widest text-sm mb-2">Welcome to A1 Property Care</h3>
+                    <h2 class="text-3xl font-extrabold text-primary mb-6">Raising the Standard of Clean</h2>
+                    <p class="text-gray-600 text-lg leading-relaxed mb-6">
+                        We don't just clean; we care for your investment. Whether managing a sprawling commercial complex in Visalia or providing deep cleaning for a residence in Madera, A1 Property Care applies rigorous commercial protocols to ensure consistency, safety, and excellence.
+                    </p>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8">
+                        <div class="text-center p-4 bg-gray-50 rounded border border-gray-100">
+                            <span class="block text-2xl font-bold text-primary mb-1">20+</span>
+                            <span class="text-xs text-gray-500 uppercase font-bold">Years Exp.</span>
+                        </div>
+                        <div class="text-center p-4 bg-gray-50 rounded border border-gray-100">
+                            <span class="block text-2xl font-bold text-primary mb-1">100%</span>
+                            <span class="text-xs text-gray-500 uppercase font-bold">Satisfaction</span>
+                        </div>
+                        <div class="text-center p-4 bg-gray-50 rounded border border-gray-100">
+                            <span class="block text-2xl font-bold text-primary mb-1">Local</span>
+                            <span class="text-xs text-gray-500 uppercase font-bold">Team</span>
+                        </div>
+                        <div class="text-center p-4 bg-gray-50 rounded border border-gray-100">
+                            <span class="block text-2xl font-bold text-primary mb-1">24/7</span>
+                            <span class="text-xs text-gray-500 uppercase font-bold">Support</span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SERVICE CARDS SECTION (Background is now gray-100) -->
+                <section id="services">
+                    <h2 class="text-2xl font-bold text-dark mb-8 border-l-4 border-secondary pl-4">Our Core Offerings</h2>
+                    
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <!-- Commercial Service Card -->
+                        <div class="group bg-gray-100 rounded-lg shadow-md overflow-hidden border border-gray-200 hover:shadow-xl transition-all duration-300">
+                            <div class="h-48 commercial-card-bg relative">
+                                <!-- Opacity maintained on image overlay for card contrast -->
+                                <div class="absolute inset-0 bg-primary opacity-10 group-hover:opacity-20 transition"></div>
+                                <div class="absolute bottom-4 left-4 bg-white px-3 py-1 rounded font-bold text-xs text-primary shadow-sm uppercase">Commercial</div>
+                            </div>
+                            <div class="p-6">
+                                <h3 class="text-xl font-bold text-dark mb-3">Facility Maintenance</h3>
+                                <p class="text-gray-600 text-sm mb-4 leading-relaxed">
+                                    Comprehensive care for offices, retail, and industrial spaces. Includes day porter services, floor restoration, and sanitization.
+                                </p>
+                                <!-- UPDATED LINK TO FULL SERVICES -->
+                                <a href="#full-services" class="text-primary font-bold text-sm hover:text-secondary transition flex items-center">
+                                    View Full Services <span class="ml-1">→</span>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Residential Service Card -->
+                        <div class="group bg-gray-100 rounded-lg shadow-md overflow-hidden border border-gray-200 hover:shadow-xl transition-all duration-300">
+                            <div class="h-48 residential-card-bg relative">
+                                <!-- Opacity maintained on image overlay for card contrast -->
+                                <div class="absolute inset-0 bg-secondary opacity-10 group-hover:opacity-20 transition"></div>
+                                <div class="absolute bottom-4 left-4 bg-white px-3 py-1 rounded font-bold text-xs text-yellow-600 shadow-sm uppercase">Residential</div>
+                            </div>
+                            <div class="p-6">
+                                <h3 class="text-xl font-bold text-dark mb-3">Residential Services</h3>
+                                <p class="text-gray-600 text-sm mb-4 leading-relaxed">
+                                    Professional-grade cleaning for your home. Ideal for move-in/move-out, post-construction, or scheduled deep cleaning maintenance.
+                                </p>
+                                <!-- UPDATED LINK TO FULL SERVICES -->
+                                <a href="#full-services" class="text-primary font-bold text-sm hover:text-secondary transition flex items-center">
+                                    View Full Services <span class="ml-1">→</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <!-- END SERVICE CARDS SECTION -->
+
+                <!-- DEDICATED FULL SERVICE LIST SECTION (UPDATED CONTENT HERE) -->
+                <section id="full-services" class="bg-white p-6 md:p-10 rounded-lg shadow-xl border border-gray-100">
+                    <h2 class="text-3xl font-extrabold text-dark mb-8">Proudly Serving the Central Valley: Comprehensive Exterior & Facility Services</h2>
+                    <!-- FIXED INTRODUCTORY TEXT -->
+                    <p class="text-lg text-gray-600 mb-8 border-b pb-4">
+                        We manage liability and protect your assets. Click any service below to see the detailed, multi-point scope of work included in every service we perform.
+                    </p>
+
+                    <div class="space-y-12">
+                        <!-- SERVICE CATEGORY I: Specialized Exterior Maintenance -->
+                        <div>
+                            <h3 class="text-2xl font-bold text-primary mb-6 flex items-center">
+                                <i data-lucide="droplet" class="w-6 h-6 mr-3 text-secondary"></i> I. Exterior Property Care
+                            </h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                
+                                <!-- Service 1: Building Exterior Washing -->
+                                <div class="service-card bg-gray-50 p-5 rounded-lg border border-gray-200 cursor-pointer shadow hover:shadow-lg transition-all" data-target="service-1">
+                                    <div class="flex items-center justify-between">
+                                        <h4 class="text-base font-bold text-gray-800">Building Exterior Washing</h4>
+                                        <svg class="w-6 h-6 text-primary transform transition-transform duration-300" data-arrow="service-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                    </div>
+                                    <div id="service-1" class="accordion-content">
+                                        <!-- Sales Content for Building Exterior Washing -->
+                                        <div class="text-xs text-gray-700 space-y-3 pt-3">
+                                            <p class="font-semibold block text-gray-900">We analyze the siding material and condition</p>
+                                            <p class="text-gray-600 pl-4">To determine the appropriate soft-washing pressure and solution. We meticulously inspect for existing paint chips, oxidation, or stucco cracks.</p>
+                                            <p class="font-semibold block text-gray-900">We eliminate biological growth and staining</p>
+                                            <p class="text-gray-600 pl-4">Removing algae, mold, and mildew, which are primary factors degrading appearance and structural health. We also identify specific stains like rust or efflorescence.</p>
+                                            <p class="font-semibold block text-gray-900">We plan for all heights and access requirements</p>
+                                            <p class="text-gray-600 pl-4">Evaluating the necessary lift equipment (boom lifts, scaffolding) or specialized pole systems for safety compliance.</p>
+                                            <p class="font-semibold block text-gray-900">We guarantee utility and environmental protection</p>
+                                            <p class="text-gray-600 pl-4">Noting sensitive zones like air intakes, exterior lighting fixtures, and all surrounding landscaping that require specific shielding and pre-wetting.</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Service 2: Pressure Washing: Walkways & Curbs -->
+                                <div class="service-card bg-gray-50 p-5 rounded-lg border border-gray-200 cursor-pointer shadow hover:shadow-lg transition-all" data-target="service-2">
+                                    <div class="flex items-center justify-between">
+                                        <h4 class="text-base font-bold text-gray-800">Pressure Washing: Walkways & Curbs</h4>
+                                        <svg class="w-6 h-6 text-primary transform transition-transform duration-300" data-arrow="service-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                    </div>
+                                    <div id="service-2" class="accordion-content">
+                                        <!-- Sales Content for Sidewalk and Walkway Pressure Washing -->
+                                        <div class="text-xs text-gray-700 space-y-3 pt-3">
+                                            <p class="font-semibold block text-gray-900">We perform surface material analysis</p>
+                                            <p class="text-gray-600 pl-4">To select the correct pressure settings and cleaning solutions. We inspect for existing damage (cracks, spalling, loose mortar) to document pre-existing conditions.</p>
+                                            <p class="font-semibold block text-gray-900">We execute stain and contaminant removal</p>
+                                            <p class="text-gray-600 pl-4">Identifying and targeting heavy dirt, biological growth (mildew, algae, moss), oil, grease spots, rust, chewing gum, and beverage spills.</p>
+                                            <p class="font-semibold block text-gray-900">Our service prioritizes minimizing slip hazards</p>
+                                            <p class="text-gray-600 pl-4">Focusing on areas with high pedestrian traffic and excessive biological growth.</p>
+                                            <p class="font-semibold block text-gray-900">We manage water runoff and environmental protection</p>
+                                            <p class="text-gray-600 pl-4">Establishing the drainage plan to divert runoff safely away from entrances and noting nearby sensitive materials that require shielding.</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Service 3: Gutter & Water Management -->
+                                <div class="service-card bg-gray-50 p-5 rounded-lg border border-gray-200 cursor-pointer shadow hover:shadow-lg transition-all" data-target="service-3">
+                                    <div class="flex items-center justify-between">
+                                        <h4 class="text-base font-bold text-gray-800">Gutter Cleaning & Water Management</h4>
+                                        <svg class="w-6 h-6 text-primary transform transition-transform duration-300" data-arrow="service-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                    </div>
+                                    <div id="service-3" class="accordion-content">
+                                        <!-- Sales Content for Gutter Cleaning & Water Management -->
+                                        <div class="text-xs text-gray-700 space-y-3 pt-3">
+                                            <p class="font-semibold block text-gray-900">We service the structure and integrity of the gutter system</p>
+                                            <p class="text-gray-600 pl-4">Inspecting all sections for proper pitch, loose hangers, separation, or leakage.</p>
+                                            <p class="font-semibold block text-gray-900">We remove all blockages and debris</p>
+                                            <p class="text-gray-600 pl-4">Ensuring all downspouts are fully clear and correctly draining water away from the building foundation.</p>
+                                            <p class="font-semibold block text-gray-900">We mitigate roof and drainage impact</p>
+                                            <p class="text-gray-600 pl-4">By looking for evidence of overflow causing damage to the roof line or siding. We verify that all splash blocks, extensions, or underground tie-ins are functioning correctly.</p>
+                                            <p class="font-semibold block text-gray-900">We ensure safety and access protocol</p>
+                                            <p class="text-gray-600 pl-4">Confirming the safest and most efficient method to access and clean the gutters while adhering to all safety guidelines.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Service 4: Roof Moss & Algae Treatment -->
+                                <div class="service-card bg-gray-50 p-5 rounded-lg border border-gray-200 cursor-pointer shadow hover:shadow-lg transition-all" data-target="service-4">
+                                    <div class="flex items-center justify-between">
+                                        <h4 class="text-base font-bold text-gray-800">Roof Moss & Algae Treatment</h4>
+                                        <svg class="w-6 h-6 text-primary transform transition-transform duration-300" data-arrow="service-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                    </div>
+                                    <div id="service-4" class="accordion-content">
+                                        <!-- Sales Content for Roof Moss & Algae Treatment -->
+                                        <div class="text-xs text-gray-700 space-y-3 pt-3">
+                                            <p class="font-semibold block text-gray-900">We analyze roofing material</p>
+                                            <p class="text-gray-600 pl-4">To select a low-pressure soft-wash chemical treatment that will not damage the surface or void manufacturer warranties. We also document any existing damage.</p>
+                                            <p class="font-semibold block text-gray-900">We map growth severity</p>
+                                            <p class="text-gray-600 pl-4">Across the roof planes to determine the required concentration for effective removal and long-term inhibition.</p>
+                                            <p class="font-semibold block text-gray-900">We ensure safety and environmental protocol compliance</p>
+                                            <p class="text-gray-600 pl-4">Verifying the protection plan for all landscaping against runoff during chemical application.</p>
+                                            <p class="font-semibold block text-gray-900">Prevention and Maintenance Plan</p>
+                                            <p class="text-gray-600 pl-4">Offering scheduled follow-up treatments to ensure long-term freedom from biological growth.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Service 5: Solar Panel Cleaning -->
+                                <div class="service-card bg-gray-50 p-5 rounded-lg border border-gray-200 cursor-pointer shadow hover:shadow-lg transition-all" data-target="service-5">
+                                    <div class="flex items-center justify-between">
+                                        <h4 class="text-base font-bold text-gray-800">Solar Panel Cleaning</h4>
+                                        <i data-lucide="sun" class="w-6 h-6 text-primary transform transition-transform duration-300" data-arrow="service-5"></i>
+                                    </div>
+                                    <div id="service-5" class="accordion-content">
+                                        <!-- Sales Content for Solar Panel Cleaning -->
+                                        <div class="text-xs text-gray-700 space-y-3 pt-3">
+                                            <p class="font-semibold block text-gray-900">We assess panel integrity and soiling severity</p>
+                                            <p class="text-gray-600 pl-4">To estimate efficiency loss caused by dust, bird droppings, and biological growth.</p>
+                                            <p class="font-semibold block text-gray-900">We guarantee a specialized cleaning methodology</p>
+                                            <p class="text-gray-600 pl-4">Using de-ionized (DI) water and non-abrasive tools to achieve a streak-free, mineral-free clean that prevents damage.</p>
+                                            <p class="font-semibold block text-gray-900">Safety and Access Plan</p>
+                                            <p class="text-gray-600 pl-4">Developing a secure method to access panels without causing structural damage or posing risk to our crew.</p>
+                                            <p class="font-semibold block text-gray-900">We demonstrate the return on investment</p>
+                                            <p class="text-gray-600 pl-4">By providing an Estimated Efficiency Benefit of cleaning to justify the service.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Service 6: Exterior Window Cleaning -->
+                                <div class="service-card bg-gray-50 p-5 rounded-lg border border-gray-200 cursor-pointer shadow hover:shadow-lg transition-all" data-target="service-6">
+                                    <div class="flex items-center justify-between">
+                                        <h4 class="text-base font-bold text-gray-800">Exterior Window Cleaning</h4>
+                                        <svg class="w-6 h-6 text-primary transform transition-transform duration-300" data-arrow="service-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                    </div>
+                                    <div id="service-6" class="accordion-content">
+                                        <!-- Sales Content for Exterior Window Cleaning -->
+                                        <div class="text-xs text-gray-700 space-y-3 pt-3">
+                                            <p class="font-semibold block text-gray-900">We assess the glass type and condition</p>
+                                            <p class="text-gray-600 pl-4">To determine if specialized spot treatment is necessary for pre-existing damage like scratches or mineral deposit etching.</p>
+                                            <p class="font-semibold block text-gray-900">Our service includes the frame, sill, and track inspection</p>
+                                            <p class="text-gray-600 pl-4">Checking for heavy dirt, oxidation, and debris accumulation that often impede window function.</p>
+                                            <p class="font-semibold block text-gray-900">We utilize a flexible system for height, access, and safety</p>
+                                            <p class="text-gray-600 pl-4">Determining the method required (ground-level, water-fed pole, or lift requirements) to ensure our team operates safely.</p>
+                                            <p class="font-semibold block text-gray-900">We coordinate scheduling and tenant impact</p>
+                                            <p class="text-gray-600 pl-4">To minimize disruption and confirm availability of exterior water sources and safe staging areas.</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Service 8: Fence & Perimeter Cleaning (Moved up to fit the Exterior theme) -->
+                                <div class="service-card bg-gray-50 p-5 rounded-lg border border-gray-200 cursor-pointer shadow hover:shadow-lg transition-all" data-target="service-8">
+                                    <div class="flex items-center justify-between">
+                                        <h4 class="text-base font-bold text-gray-800">Fence & Perimeter Cleaning</h4>
+                                        <svg class="w-6 h-6 text-primary transform transition-transform duration-300" data-arrow="service-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                    </div>
+                                    <div id="service-8" class="accordion-content">
+                                        <!-- Sales Content for Fence & Perimeter Cleaning -->
+                                        <div class="text-xs text-gray-700 space-y-3 pt-3">
+                                            <p class="font-semibold block text-gray-900">We identify the material and condition of the fence</p>
+                                            <p class="text-gray-600 pl-4">To select the correct specialized cleaning agents and pressure levels. We document the presence of existing rot, loose panels, or damaged coatings prior to any work beginning.</p>
+                                            <p class="font-semibold block text-gray-900">We remove biological growth and staining</p>
+                                            <p class="text-gray-600 pl-4">Eliminating mildew, mold, algae, and identifying specific stains such as rust or irrigation runoff.</p>
+                                            <p class="font-semibold block text-gray-900">We implement a preparation and protection protocol</p>
+                                            <p class="text-gray-600 pl-4">Confirming all necessary preparations, including protecting surrounding landscaping, sensitive entry gates, and utility boxes.</p>
+                                            <p class="font-semibold block text-gray-900">Access and Operational Planning</p>
+                                            <p class="text-gray-600 pl-4">Determining the most efficient access route and operational flow to minimize time spent on site.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Placeholder to complete the 3-column grid look if only 7 services -->
+                                <div class="hidden lg:block"></div> 
+
+                            </div>
+                        </div>
+
+                        <!-- SERVICE CATEGORY II: Facility and Site Services -->
+                        <div>
+                            <h3 class="text-2xl font-bold text-primary mb-6 flex items-center">
+                                <i data-lucide="package" class="w-6 h-6 mr-3 text-secondary"></i> II. Facility & Emergency Services
+                            </h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+                                <!-- Service 7: Swimming Pool & Deck Services -->
+                                <div class="service-card bg-gray-50 p-5 rounded-lg border border-gray-200 cursor-pointer shadow hover:shadow-lg transition-all" data-target="service-7">
+                                    <div class="flex items-center justify-between">
+                                        <h4 class="text-base font-bold text-gray-800">Swimming Pool & Deck Services</h4>
+                                        <svg class="w-6 h-6 text-primary transform transition-transform duration-300" data-arrow="service-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                    </div>
+                                    <div id="service-7" class="accordion-content">
+                                        <!-- Sales Content for Swimming Pool & Deck Maintenance -->
+                                        <div class="text-xs text-gray-700 space-y-3 pt-3">
+                                            <p class="font-semibold block text-gray-900">Equipment and Pump Room Integrity:</p>
+                                            <p class="text-gray-600 pl-4">We check for leaks, proper ventilation, filtration/pumping systems, and chemical storage compliance.</p>
+                                            <p class="font-semibold block text-gray-900">Water Quality and Chemical Compliance:</p>
+                                            <p class="text-gray-600 pl-4">Assessment of water chemistry, checking for corrosive conditions, and verifying systems meet state health standards.</p>
+                                            <p class="font-semibold block text-gray-900">Pool Deck and Immediate Surroundings:</p>
+                                            <p class="text-gray-600 pl-4">Inspection for physical hazards, handrails, non-slip surfacing, and addressing mold/mildew to prevent slip-and-fall liability.</p>
+                                            <p class="font-semibold block text-gray-900">Safety Signage and Documentation:</p>
+                                            <p class="text-gray-600 pl-4">Ensure all required signage (rules, depth markers) is visible, compliant, and review current logkeeping procedures.</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Service 9: Bulk Material & Illegal Dumping Removal -->
+                                <div class="service-card bg-gray-50 p-5 rounded-lg border border-gray-200 cursor-pointer shadow hover:shadow-lg transition-all" data-target="service-9">
+                                    <div class="flex items-center justify-between">
+                                        <h4 class="text-base font-bold text-gray-800">Bulk Material & Dumping Removal</h4>
+                                        <svg class="w-6 h-6 text-primary transform transition-transform duration-300" data-arrow="service-9" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                    </div>
+                                    <div id="service-9" class="accordion-content">
+                                        <!-- Sales Content for Bulk Material Management & Illegal Dumping Removal -->
+                                        <div class="text-xs text-gray-700 space-y-3 pt-3">
+                                            <p class="font-semibold block text-gray-900">Volume and Location Analysis:</p>
+                                            <p class="text-gray-600 pl-4">To identify the typical volume and frequency of illegal dumping and accumulation (e.g., furniture, mattresses) and identify all common dumping hot spots.</p>
+                                            <p class="font-semibold block text-gray-900">Access, Safety, and Equipment Needs:</p>
+                                            <p class="text-gray-600 pl-4">Establishing all gate codes or height restrictions and confirming the type of equipment needed (e.g., lift gate access) for efficient hauling.</p>
+                                            <p class="font-semibold block text-gray-900">Compliance and Disposal Protocol:</p>
+                                            <p class="text-gray-600 pl-4">Verifying the local jurisdiction's requirements for waste separation and establishing the legal disposal facility.</p>
+                                            <p class="font-semibold block text-gray-900">Emergency/Priority Removal Option:</p>
+                                            <p class="text-gray-600 pl-4">Defining the threshold for urgent, on-demand service (e.g., large items blocking fire lanes) to maintain property safety.</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Service 10: Day Porter Services -->
+                                <div class="service-card bg-gray-50 p-5 rounded-lg border border-gray-200 cursor-pointer shadow hover:shadow-lg transition-all" data-target="service-10">
+                                    <div class="flex items-center justify-between">
+                                        <h4 class="text-base font-bold text-gray-800">Day Porter Services</h4>
+                                        <svg class="w-6 h-6 text-primary transform transition-transform duration-300" data-arrow="service-10" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                    </div>
+                                    <div id="service-10" class="accordion-content">
+                                        <!-- Sales Content for Day Porter Services -->
+                                        <div class="text-xs text-gray-700 space-y-3 pt-3">
+                                            <p class="font-semibold block text-gray-900">Priority Zone Maintenance:</p>
+                                            <p class="text-gray-600 pl-4">Covering high-visibility and high-traffic areas, including the main leasing office entrance, mailroom, common area restrooms, and amenity entrances.</p>
+                                            <p class="font-semibold block text-gray-900">Scope of Work and Task Frequency:</p>
+                                            <p class="text-gray-600 pl-4">Includes monitoring and emptying common area trash receptacles, spot-cleaning glass, removing debris from walkways, and immediate cleanup of spills.</p>
+                                            <p class="font-semibold block text-gray-900">Amenity and Restroom Checks:</p>
+                                            <p class="text-gray-600 pl-4">Regular checks assessing the frequency needed for restocking and light cleaning of common area facilities.</p>
+                                            <p class="font-semibold block text-gray-900">Communication and Reporting:</p>
+                                            <p class="text-gray-600 pl-4">Establishing a direct protocol for the Day Porter to immediately communicate maintenance needs (broken lights, graffiti, potential hazards) to the property manager.</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Service 11: Emergency Response & Cleanup -->
+                                <div class="service-card bg-gray-50 p-5 rounded-lg border border-gray-200 cursor-pointer shadow hover:shadow-lg transition-all" data-target="service-11">
+                                    <div class="flex items-center justify-between">
+                                        <h4 class="text-base font-bold text-gray-800">Emergency Response & Cleanup</h4>
+                                        <i data-lucide="zap" class="w-6 h-6 text-primary transform transition-transform duration-300" data-arrow="service-11"></i>
+                                    </div>
+                                    <div id="service-11" class="accordion-content">
+                                        <!-- Sales Content for Emergency Response Protocol -->
+                                        <div class="text-xs text-gray-700 space-y-3 pt-3">
+                                            <p class="font-semibold block text-gray-900">Immediate Dispatch Services:</p>
+                                            <p class="text-gray-600 pl-4">Offering rapid response to critical issues affecting common areas, building safety, and occupant access.</p>
+                                            <p class="font-semibold block text-gray-900">Scope of Emergency Services:</p>
+                                            <p class="text-gray-600 pl-4">Rapid response to pool emergencies, cleanup of common area water intrusions, priority bulk item removal, and vandalism/graffiti containment.</p>
+                                            <p class="font-semibold block text-gray-900">Prioritized Response Commitment:</p>
+                                            <p class="text-gray-600 pl-4">Highest priority dispatch upon receiving your call to begin stabilization and cleanup to minimize disruption.</p>
+                                            <p class="font-semibold block text-gray-900">Post-Incident Reporting and Documentation:</p>
+                                            <p class="text-gray-600 pl-4">Detailed, on-site documentation including time-stamped photos and a summary of actions for insurance/internal needs.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Placeholder to complete the 3-column grid look -->
+                                <div class="hidden lg:block"></div> 
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-center mt-12 pt-6 border-t border-gray-100">
+                        <a href="#quote-form-section" class="inline-flex items-center bg-primary text-white font-black px-8 py-3.5 rounded-full text-base uppercase tracking-wider hover:bg-indigo-800 transition transform shadow-lg">
+                            Request a Custom Service Plan
+                        </a>
+                    </div>
+                </section>
+                <!-- END DEDICATED FULL SERVICE LIST SECTION -->
+
+
+                <section id="why-us" class="grid md:grid-cols-2 gap-8">
+                    <div>
+                        <h2 class="text-xl font-bold text-dark mb-4">Why Choose A1?</h2>
+                        <ul class="space-y-3">
+                            <!-- Bullet 1: Darker Green for better visibility -->
+                            <li class="flex items-start">
+                                <div class="bg-green-600 p-1 rounded-full mr-3 mt-1"><i data-lucide="check-circle" class="w-4 h-4 text-white"></i></div>
+                                <span class="text-gray-700 text-sm">Bonded & Insured Professionals</span>
+                            </li>
+                            <!-- Bullet 2: Darker Green for better visibility -->
+                            <li class="flex items-start">
+                                <div class="bg-green-600 p-1 rounded-full mr-3 mt-1"><i data-lucide="check-circle" class="w-4 h-4 text-white"></i></div>
+                                <span class="text-gray-700 text-sm">Customized Maintenance Plans</span>
+                            </li>
+                            <!-- Bullet 3: Darker Green for better visibility -->
+                            <li class="flex items-start">
+                                <div class="bg-green-600 p-1 rounded-full mr-3 mt-1"><i data-lucide="check-circle" class="w-4 h-4 text-white"></i></div>
+                                <span class="text-gray-700 text-sm">Eco-Friendly Product Options</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div id="locations">
+                        <h2 class="text-xl font-bold text-dark mb-4">Service Area</h2>
+                        <div class="bg-gray-100 p-4 rounded-lg">
+                            <p class="text-sm text-gray-700 mb-2 font-bold"><i data-lucide="map-pin" class="w-4 h-4 inline mr-1 text-primary"></i> HQ: Fresno, CA</p>
+                            <p class="text-xs text-gray-500 leading-relaxed">
+                                We proudly serve the entire Central Valley corridor, extending North to Madera and South to Bakersfield, including Visalia, Tulare, and Hanford.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+
+            <div class="lg:w-1/3">
+                <div id="quote-form-section" class="sticky-form-container">
+                    <div class="bg-primary p-6 rounded-t-lg border-b-4 border-secondary shadow-2xl">
+                        <h3 class="text-2xl font-black text-white text-center mb-1">GET A QUOTE</h3>
+                        <p class="text-indigo-200 text-center text-xs">Fast response for all property types.</p>
+                    </div>
+                    <!-- Form Container -->
+                    <div id="form-container" class="bg-white border-l border-r border-b border-gray-200 p-6 shadow-lg rounded-b-lg">
+                        <form id="quote-form" class="space-y-4">
+                            <div>
+                                <label for="name" class="block text-xs font-bold text-gray-700 uppercase mb-1">Full Name *</label>
+                                <input type="text" id="name" required class="w-full bg-gray-50 border border-gray-300 p-2.5 rounded focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition text-sm">
+                            </div>
+                            
+                            <div>
+                                <label for="email" class="block text-xs font-bold text-gray-700 uppercase mb-1">Email Address *</label>
+                                <input type="email" id="email" required class="w-full bg-gray-50 border border-gray-300 p-2.5 rounded focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition text-sm">
+                            </div>
+
+                            <div>
+                                <label for="phone" class="block text-xs font-bold text-gray-700 uppercase mb-1">Phone Number *</label>
+                                <input type="tel" id="phone" required class="w-full bg-gray-50 border border-gray-300 p-2.5 rounded focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition text-sm">
+                            </div>
+
+                            <div>
+                                <label for="propertyType" class="block text-xs font-bold text-gray-700 uppercase mb-1">Property Type</label>
+                                <select id="propertyType" class="w-full bg-gray-50 border border-gray-300 p-2.5 rounded focus:outline-none focus:border-primary text-sm text-gray-700">
+                                    <option>Commercial</option>
+                                    <option>Residential</option>
+                                    <option>Industrial</option>
+                                    <option>Multi-Family/HOA</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label for="message" class="block text-xs font-bold text-gray-700 uppercase mb-1">Message</label>
+                                <textarea id="message" rows="3" class="w-full bg-gray-50 border border-gray-300 p-2.5 rounded focus:outline-none focus:border-primary transition text-sm"></textarea>
+                            </div>
+
+                            <div class="flex items-start space-x-3 pt-2">
+                                <input type="checkbox" required id="consent" class="form-checkbox flex-shrink-0 mt-1 cursor-pointer">
+                                <label for="consent" class="text-[10px] leading-tight text-gray-500 text-justify">
+                                    I agree to be contacted by A1 Property Care LLC via call, email, and text. To opt out, you can reply ‘stop’ at any time or click the unsubscribe link in the emails. Message and data rates may apply. <a href="#" class="text-primary underline font-bold">Privacy Policy</a>.
+                                </label>
+                            </div>
+
+                            <button type="submit" id="submit-btn" class="w-full bg-secondary text-dark font-black py-3 rounded uppercase tracking-widest text-sm hover:bg-yellow-300 shadow-md transition transform hover:-translate-y-0.5 mt-2 flex items-center justify-center">
+                                Submit Request
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer class="footer-bg text-white pt-16 pb-8 mt-auto relative">
+        <div class="absolute inset-0 bg-gray-900 bg-opacity-90"></div>
+        
+        <div class="max-w-7xl mx-auto px-4 lg:px-8 relative z-10">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+                <div>
+                    <h4 class="text-2xl font-black mb-6 text-white tracking-tighter">A1 PROPERTY<br><span class="text-primary">CARE LLC</span></h4>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-6">
+                        Bringing professional janitorial and maintenance standards to the Central Valley.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-secondary transition"><i data-lucide="facebook" class="w-5 h-5"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-secondary transition"><i data-lucide="linkedin" class="w-5 h-5"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-secondary transition"><i data-lucide="instagram" class="w-5 h-5"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-secondary transition">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                        </a>
+                    </div>
+                </div>
+
+                <div>
+                    <h5 class="text-white font-bold uppercase tracking-widest text-xs mb-6 border-b border-indigo-900 pb-2">Company</h5>
+                    <ul class="space-y-3 text-sm text-gray-400">
+                        <li><a href="#" class="hover:text-white transition">About Us</a></li>
+                        <li><a href="#full-services" class="hover:text-white transition">Services</a></li>
+                        <li><a href="#locations" class="hover:text-white transition">Locations</a></li>
+                        <li><a href="#" class="hover:text-white transition">Careers</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h5 class="text-white font-bold uppercase tracking-widest text-xs mb-6 border-b border-indigo-900 pb-2">Contact</h5>
+                    <ul class="space-y-4 text-sm text-gray-400">
+                        <li class="flex items-start">
+                            <i data-lucide="map-pin" class="w-4 h-4 mr-2 mt-1 text-primary"></i>
+                            <span>Fresno, CA<br>Serving Central Valley</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i data-lucide="phone" class="w-4 h-4 mr-2 text-primary"></i>
+                            <a href="tel:5595552273" class="hover:text-white transition">(559) 555-CARE</a>
+                        </li>
+                        <li class="flex items-center">
+                            <i data-lucide="mail" class="w-4 h-4 mr-2 text-primary"></i>
+                            <a href="mailto:info@a1propertycare.com" class="hover:text-white transition">info@a1propertycare.com</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h5 class="text-white font-bold uppercase tracking-widest text-xs mb-6 border-b border-indigo-900 pb-2">Our Promise</h5>
+                    <p class="text-xs text-gray-500 leading-relaxed">
+                        We are committed to providing a clean, safe, and healthy environment for your businesses and Residential Properties.
+                    </p>
+                </div>
+            </div>
+
+            <div class="border-t border-indigo-900 pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-gray-500">
+                <p>&copy; 2025 A1 Property Care LLC. All Rights Reserved.</p>
+                <div class="flex space-x-4 mt-4 md:mt-0">
+                    <a href="#" class="hover:text-white transition">Privacy Policy</a>
+                    <a href="#" class="hover:text-white transition">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script type="module">
+        // Import Firebase modules
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, doc, setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Set log level for debugging Firebase
+        setLogLevel('debug');
+
+        // Global Firebase variables
+        let app;
+        let db;
+        let auth;
+        let userId = 'anonymous'; // Default ID
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
+        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+
+        /**
+         * Initializes Firebase and authenticates the user.
+         */
+        async function initializeFirebase() {
+            try {
+                if (Object.keys(firebaseConfig).length === 0) {
+                    console.error("Firebase configuration not found. Firestore features will be disabled.");
+                    return;
+                }
+                
+                app = initializeApp(firebaseConfig);
+                db = getFirestore(app);
+                auth = getAuth(app);
+                
+                // Use browser local persistence to maintain sign-in across sessions
+                await setPersistence(auth, browserLocalPersistence);
+
+                if (initialAuthToken) {
+                    await signInWithCustomToken(auth, initialAuthToken);
+                } else {
+                    await signInAnonymously(auth);
+                }
+
+                onAuthStateChanged(auth, (user) => {
+                    if (user) {
+                        userId = user.uid;
+                        console.log(`Firebase authenticated. User ID: ${userId}`);
+                        // Ready for Firestore operations
+                    } else {
+                        console.warn("User is signed out or auth is not ready.");
+                        // Attempt anonymous sign-in if needed for site functionality
+                        if (!initialAuthToken) {
+                            signInAnonymously(auth).catch(e => console.error("Anonymous sign-in failed:", e));
+                        }
+                    }
+                });
+
+            } catch (error) {
+                console.error("Error initializing Firebase or signing in:", error);
+            }
+        }
+
+        // Initialize Firebase on load
+        initializeFirebase();
+
+
+        // Mobile menu toggle
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+        const formContainer = document.getElementById('form-container');
+        const quoteForm = document.getElementById('quote-form');
+        const submitBtn = document.getElementById('submit-btn');
+
+        btn.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                menu.classList.add('hidden'); // Close mobile menu if open
+                const targetId = this.getAttribute('href').substring(1);
+                document.getElementById(targetId).scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start' // Ensure the section starts at the top of the viewport
+                });
+            });
+        });
+
+        // --- Accordion Functionality ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const serviceCards = document.querySelectorAll('.service-card');
+
+            serviceCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    const targetId = card.getAttribute('data-target');
+                    const content = document.getElementById(targetId);
+                    const arrow = document.querySelector(`[data-arrow="${targetId}"]`);
+                    
+                    // Close all other open cards
+                    document.querySelectorAll('.accordion-content.active').forEach(openContent => {
+                        if (openContent.id !== targetId) {
+                            openContent.classList.remove('active');
+                            const openArrow = document.querySelector(`[data-arrow="${openContent.id}"]`);
+                            if (openArrow) openArrow.classList.remove('rotate-180');
+                        }
+                    });
+
+                    // Toggle the clicked card
+                    content.classList.toggle('active');
+                    if (arrow) arrow.classList.toggle('rotate-180');
+                });
+            });
+        });
+
+
+        // --- Quote Form Submission Logic (Firestore) ---
+        quoteForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            if (!db || !auth.currentUser) {
+                console.error("Database or User not initialized/authenticated.");
+                displayMessage(formContainer, 'Error: Could not submit. Please refresh and try again.', 'bg-red-500');
+                return;
+            }
+
+            // Show loading state
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="loader"></span> PROCESSING...';
+
+            // Gather form data
+            const formData = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                propertyType: document.getElementById('propertyType').value,
+                message: document.getElementById('message').value,
+                timestamp: new Date(),
+                userId: userId // Save the ID of the user submitting the quote
+            };
+
+            // Define the collection path (Private collection for this app owner's user ID)
+            const quoteCollectionPath = `/artifacts/${appId}/users/${userId}/quote_requests`;
+
+            try {
+                // Save to Firestore
+                const docRef = await addDoc(collection(db, quoteCollectionPath), formData);
+                
+                console.log("Quote submitted successfully with ID: ", docRef.id);
+                
+                // Display success message
+                displayMessage(formContainer, 'Thank you! Your quote request has been sent. We will contact you shortly.', 'bg-green-500');
+                
+            } catch (error) {
+                console.error("Error adding document to Firestore:", error);
+                // Display error message
+                displayMessage(formContainer, 'Submission Failed. Please check your network and try again.', 'bg-red-500');
+            }
+        });
+
+        /**
+         * Replaces the form with a temporary status message.
+         * @param {HTMLElement} container The container element for the form.
+         * @param {string} message The message to display.
+         * @param {string} bgColor Tailwind background color class.
+         */
+        function displayMessage(container, message, bgColor) {
+            container.innerHTML = `
+                <div class="p-8 text-center rounded-b-lg ${bgColor} text-white font-bold transition-all duration-300">
+                    <i data-lucide="${bgColor.includes('green') ? 'check-circle' : 'alert-triangle'}" class="w-8 h-8 mx-auto mb-3"></i>
+                    <p class="text-lg">${message}</p>
+                </div>
+            `;
+            // Re-render lucide icons if necessary
+            if (typeof createIcons === 'function') {
+                import('https://cdn.jsdelivr.net/npm/lucide@latest/dist/esm/lucide.js')
+                    .then(({ createIcons, CheckCircle, AlertTriangle }) => {
+                        createIcons({ icons: { CheckCircle, AlertTriangle } });
+                    });
+            }
+        }
+    </script>
+</body>
+</html>
+
